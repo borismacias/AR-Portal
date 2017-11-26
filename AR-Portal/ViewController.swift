@@ -57,6 +57,22 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let planeZposition = transform.columns.3.z
         portalNode.position = SCNVector3(planeXposition, planeYposition, planeZposition)
         self.sceneView.scene.rootNode.addChildNode(portalNode)
+        self.addPlane(nodeName: "roof", portalNode: portalNode, imageName: "top")
+        self.addPlane(nodeName: "floor", portalNode: portalNode, imageName: "bottom")
+        self.addPlane(nodeName: "backWall", portalNode: portalNode, imageName: "back")
+        self.addPlane(nodeName: "leftWall", portalNode: portalNode, imageName: "sideB")
+        self.addPlane(nodeName: "rightWall", portalNode: portalNode, imageName: "sideA")
+        self.addPlane(nodeName: "sideDoorA", portalNode: portalNode, imageName: "sideDoorB")
+        self.addPlane(nodeName: "sideDoorB", portalNode: portalNode, imageName: "sideDoorA")
+    }
+    
+    func addPlane(nodeName: String, portalNode: SCNNode, imageName: String){
+        let child = portalNode.childNode(withName: nodeName, recursively: true)
+        child?.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "Portal.scnassets/\(imageName).png")
+        child?.renderingOrder = 200
+        if let mask = child?.childNode(withName: "mask", recursively: false){
+            mask.geometry?.firstMaterial?.transparency = 0.00000001
+        }
     }
 }
 
